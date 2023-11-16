@@ -187,3 +187,4 @@ SWAGGER_SETTINGS = {
     },
     "USE_SESSION_AUTH": False,
 }
+FORCE_SCRIPT_NAME = '/demo'
