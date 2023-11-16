@@ -9,7 +9,7 @@ from drf_spectacular.views import SpectacularAPIView
 admin.site.site_url = None
 urlpatterns = [
     path("api/components/schema/", SpectacularAPIView.as_view(), name="schema"),
-    path("new_admin", admin.site.urls),
+    path("new_admin/", admin.site.urls),
     path(
         "api/components/docs/",
         TemplateView.as_view(
