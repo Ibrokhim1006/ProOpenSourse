@@ -4,6 +4,7 @@ from components.views.views import (
     ComponentsAboutViews,
     ComponentsCrudViews,
     ComponentsAbudCrudViews,
+    Maina,
 )
 
 urlpatterns = [
@@ -11,4 +12,5 @@ urlpatterns = [
     path('<int:pk>/', ComponentsCrudViews.as_view()),
     path('<str:name>/', ComponentsAboutViews.as_view()),
     path('about/<int:pk>/', ComponentsAbudCrudViews.as_view()),
+    path('Maina/', Maina.as_view())
 ]

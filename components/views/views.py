@@ -14,6 +14,13 @@ from components.serializers.serializers import (
 )
 
 
+class Maina(APIView):
+    def get(self, request):
+        print(1)
+        print(1)
+        return Response({'s': 'a'}, status=status.HTTP_200_OK)
+
+
 class ComponentsListViews(APIView):
     @extend_schema(
         description="GET components list",
@@ -294,4 +301,4 @@ class AboutComponentsViews(APIView):
     def get(self, request):
         print(1)
         print(1)
-        return Response(status=status.HTTP_200_OK)
+        return Response({'s': 'a'}, status=status.HTTP_200_OK)
