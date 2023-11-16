@@ -9,8 +9,11 @@
 </head>
 
 <body>
-    <div id="swagger-ui"></div>
+    <div id="swagger-ui">
+        <h1>Salom</h1>
+    </div>
     <script src="https://unpkg.com/swagger-ui-dist@3/swagger-ui-bundle.js"></script>
+
     <script>
         const ui = SwaggerUIBundle({
             url: "{% url 'schema' %}",

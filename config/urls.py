@@ -11,16 +11,6 @@ urlpatterns = [
     path("api/components/schema/", SpectacularAPIView.as_view(), name="schema"),
     path("api/components/admin/", admin.site.urls),
     path(
-        "api/components/api/token/",
-        jwt_views.TokenObtainPairView.as_view(),
-        name="token_obtain_pair",
-    ),
-    path(
-        "api/components/api/token/refresh/",
-        jwt_views.TokenRefreshView.as_view(),
-        name="token_refresh",
-    ),
-    path(
         "api/components/docs/",
         TemplateView.as_view(
             template_name="doc.html", extra_context={"schema_url": "api_schema"}
