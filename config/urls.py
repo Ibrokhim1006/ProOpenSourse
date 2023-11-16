@@ -6,10 +6,10 @@ from django.conf import settings
 from rest_framework_simplejwt import views as jwt_views
 from django.views.generic import TemplateView
 from drf_spectacular.views import SpectacularAPIView
-
+admin.site.site_url = None
 urlpatterns = [
     path("api/components/schema/", SpectacularAPIView.as_view(), name="schema"),
-    path("api/components/admin/", admin.site.urls),
+    path("new_admin", admin.site.urls),
     path(
         "api/components/docs/",
         TemplateView.as_view(
