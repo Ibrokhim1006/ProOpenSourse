@@ -14,6 +14,56 @@ from components.serializers.serializers import (
 )
 
 
+class AboutComponentsViews(APIView):
+    @extend_schema(
+        description="""POST the component about \r\n
+        https://prounity.uz/api/components/abou_components/
+
+        {
+            "title": str,
+            "content": str,
+            "img": Image [JPG, PNG],
+            "files": Files [DOC, TXT],
+            "secret_key": str,
+            "component_id": int
+        }
+        """,
+        responses={200: "OK"},
+    )
+    def get(self, request):
+        objects_list = ComponentsAbout.objects.all()
+        serializers = ComponentsAboutSerializers(objects_list, many=True)
+        return Response(serializers.data, status=status.HTTP_200_OK)
+
+    def post(self, request, format=None):
+        title = request.data.get("title")
+        content = request.data.get("content")
+        img = request.data.get("img")
+        component_id = request.data.get("component_id")
+        files = request.data.get("files")
+        secret_key = request.data.get("secret_key")
+        if title == "" or content == "" or component_id == "" or secret_key == "":
+            context = {"No information entered"}
+            return Response(context, status=status.HTTP_400_BAD_REQUEST)
+        secret_keys = ScretKey.objects.filter(name=secret_key)
+        if secret_keys.exists():
+            component = Components.objects.get(id=component_id)
+            components = ComponentsAbout(
+                title=title,
+                content=content,
+                img=img,
+                files=files,
+                component_id=component,
+                secret_key=secret_key,
+            )
+            components.save()
+
+            return JsonResponse({"msg": "success"}, status=status.HTTP_200_OK)
+        else:
+            context = {"Secret Key error"}
+            return Response(context, status=status.HTTP_400_BAD_REQUEST)
+
+
 class ComponentsListViews(APIView):
     @extend_schema(
         description="GET components list",
@@ -173,10 +223,14 @@ class ComponentsAbudCrudViews(APIView):
 
             https://prounity.uz/api/components/about/<int: pk>/
 
-            {
-            name: <str>,
-            secret_key: <str>
-            }
+             {
+            "title": str,
+            "content": str,
+            "img": Image [JPG, PNG],
+            "files": Files [DOC, TXT],
+            "secret_key": str,
+            "component_id": int
+        }
         """,
         responses={200: "OK"},
     )
@@ -231,67 +285,3 @@ class ComponentsAbudCrudViews(APIView):
             context = {"Secret Key error"}
             return Response(context, status=status.HTTP_204_NO_CONTENT)
         return JsonResponse({"msg": "Delete susccess"}, status=status.HTTP_200_OK)
-
-
-# class AboutComonent(APIView):
-#     @extend_schema(
-#         description="""GET the component by name \r\n
-#         component name: button,  card
-#         https://prounity.uz/api/components/<str: component name>/
-#         https://prounity.uz/api/components/button/
-#         """,
-#         responses={200: "OK"},
-#     )
-#     def get(self, request):
-#         objects_list = ComponentsAbout.objects.all()
-#         serializers = ComponentsAboutSerializers(objects_list, many=True)
-#         return Response(serializers.data, status=status.HTTP_200_OK)
-
-#     @extend_schema(
-#         description="""POST components about key \r\n
-#             https://prounity.uz/api/components/component_about/
-#             {
-#             "title": <str>,
-#             "content": <str>,
-#             "img": Image File (JPG, PNG),
-#             "files": Files (DOC, PDF, EXCEL, TXT)
-#             "component_id": <int: id>, Component ID,
-#             "secret_key": <str>
-#             }
-#         """,
-#         responses={200: "OK"},
-#     )
-#     def post(self, request, format=None):
-#         title = request.data.get("title")
-#         content = request.data.get("content")
-#         img = request.data.get("img")
-#         component_id = request.data.get("component_id")
-#         files = request.data.get("files")
-#         secret_key = request.data.get("secret_key")
-
-#         if title == "" or content == "" or component_id is None or secret_key == "":
-#             context = {"No information entered"}
-#             return Response(context, status=status.HTTP_400_BAD_REQUEST)
-#         secret_keys = ScretKey.objects.filter(name=secret_key)
-#         if secret_keys.exists():
-#             components = ComponentsAbout(
-#                 title=title,
-#                 content=content,
-#                 img=img,
-#                 files=files,
-#                 component_id=component_id,
-#                 secret_key=secret_key,
-#             )
-#             components.save()
-
-#             return JsonResponse({"msg": "success"}, status=status.HTTP_200_OK)
-#         else:
-#             context = {"Secret Key error"}
-#             return Response(context, status=status.HTTP_400_BAD_REQUEST)
-
-
-class AboutComponentsViews(APIView):
-    def get(self, request):
-        print(1)
-        print(1)
-        return Response({'s': 'a'}, status=status.HTTP_200_OK)
